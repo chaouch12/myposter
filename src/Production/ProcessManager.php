@@ -16,6 +16,6 @@ final class ProcessManager
 	 */
 	public function confirmAndMoveToState(StateInterface $state, Article $article): void
 	{
-		// TODO: Implement
+        $state->transitionTo($state, $article);
 	}
 }

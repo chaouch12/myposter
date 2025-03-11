@@ -4,17 +4,34 @@ declare(strict_types=1);
 
 namespace Myposter\Production;
 
-use Myposter\Production\State\Ordered;
 use Myposter\Production\State\StateInterface;
 
-final class Article
+abstract class Article
 {
 	public const TYPE_POSTER_FRAMED = 'poster-framed';
 	public const TYPE_PRINTED_GLASS = 'printed-glass';
 
 	private string $articleType;
+	private StateInterface $state;
 
-	private bool $hasGiftWrapping = false;
+    /**
+     * @var StateInterface[]
+     */
+    protected array $stateTransitions = [];
+	protected bool $hasGiftWrapping = false;
+
+	/**
+	 * @throws \InvalidArgumentException Unknown article type
+	 */
+	public function __construct(string $articleType, StateInterface $initialState)
+	{
+		self::validateType($articleType);
+		$this->articleType = $articleType;
+		$this->state = $initialState;
+        $this->initializeStates();
+	}
+
+    abstract protected function initializeStates(): void;
 
 	/**
 	 * @return string[]
@@ -42,19 +59,14 @@ final class Article
 		}
 	}
 
-	/**
-	 * @throws \InvalidArgumentException Unknown article type
-	 */
-	public function __construct(string $articleType)
+	public function getState(): StateInterface
 	{
-		self::validateType($articleType);
-
-		$this->articleType = $articleType;
+		return $this->state;
 	}
 
-	public function hasGiftWrapping(): bool
+	public function setState(StateInterface $state): void
 	{
-		return $this->hasGiftWrapping;
+		$this->state = $state;
 	}
 
 	/**
@@ -63,18 +75,21 @@ final class Article
 	public function enableGiftWrapping(): self
 	{
 		$this->hasGiftWrapping = true;
-
 		return $this;
 	}
 
-	public function getState(): StateInterface
+	public function hasGiftWrapping(): bool
 	{
-		// TODO: Implement
-		return new Ordered();
+		return $this->hasGiftWrapping;
 	}
 
 	public function getType(): string
 	{
 		return $this->articleType;
 	}
+
+    public function getStateTransitions(): array
+    {
+        return $this->stateTransitions;
+    }
 }

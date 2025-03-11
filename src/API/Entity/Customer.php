@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Myposter\Api\Entity;
+namespace Myposter\API\Entity;
 
 final class Customer
 {

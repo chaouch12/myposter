@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Myposter\Api;
+namespace Myposter\API;
 
 final class CustomerDataApiMock
 {
