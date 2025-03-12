@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Myposter\Tests\Production;
 
-use Myposter\Production\Article;
+use Myposter\Logger\LoggerFactory;
+use Myposter\Logger\LoggerInterface;
+use Myposter\Logger\LoggerType;
 use Myposter\Production\Exception\InvalidStateTransferException;
 use Myposter\Production\FramedPoster;
 use Myposter\Production\GlassPlate;
@@ -16,15 +18,18 @@ use Myposter\Production\State\Printed;
 use Myposter\Production\State\Shipped;
 use Myposter\Production\State\Sliced;
 use Myposter\Production\State\StateInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 final class ArticleTest extends TestCase
 {
 	private ProcessManager $manager;
+    protected LoggerInterface|MockObject|null $logger_mock = null;
 
 	protected function setUp(): void
 	{
-		$this->manager = new ProcessManager();
+		$this->manager = new ProcessManager($this->get_logger_mock());
+//        $this->manager = new ProcessManager(LoggerFactory::create(LoggerType::FILE));
 	}
 
 	/**
@@ -303,4 +308,8 @@ final class ArticleTest extends TestCase
 			$this->manager->confirmAndMoveToState($state, $article);
 		}
 	}
+
+    private function get_logger_mock(): LoggerInterface | MockObject {
+        return $this->getMockBuilder(LoggerInterface::class)->getMock();
+    }
 }
