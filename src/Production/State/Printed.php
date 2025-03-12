@@ -4,16 +4,9 @@ declare(strict_types=1);
 
 namespace Myposter\Production\State;
 
-use Myposter\Production\State;
-
-final class Printed extends AbstractState
+final class Printed implements StateInterface
 {
 	public const TYPE = 'printed';
-
-    public function __construct()
-    {
-        $this->validNextStates = [State::SLICED, State::GIFT_WRAPPED, State::SHIPPED];
-    }
 
 	public function getType(): string
 	{

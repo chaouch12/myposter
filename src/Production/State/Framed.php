@@ -6,14 +6,9 @@ namespace Myposter\Production\State;
 
 use Myposter\Production\State;
 
-final class Framed extends AbstractState
+final class Framed implements StateInterface
 {
 	public const TYPE = 'framed';
-
-    public function __construct()
-    {
-        $this->validNextStates = [State::GIFT_WRAPPED, State::SHIPPED];
-    }
 
 	public function getType(): string
 	{

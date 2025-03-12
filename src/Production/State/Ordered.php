@@ -4,16 +4,9 @@ declare(strict_types=1);
 
 namespace Myposter\Production\State;
 
-use Myposter\Production\State;
-
-final class Ordered extends AbstractState
+final class Ordered implements StateInterface
 {
 	public const TYPE = 'ordered';
-    public function __construct()
-    {
-        $this->validNextStates = [State::PRINTED];
-    }
-
 
 	public function getType(): string
 	{

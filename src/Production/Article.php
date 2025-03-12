@@ -4,34 +4,33 @@ declare(strict_types=1);
 
 namespace Myposter\Production;
 
-use Myposter\Production\State\StateInterface;
-
 abstract class Article
 {
 	public const TYPE_POSTER_FRAMED = 'poster-framed';
 	public const TYPE_PRINTED_GLASS = 'printed-glass';
 
 	private string $articleType;
-	private StateInterface $state;
+    private int $currentStateIndex;
 
     /**
-     * @var StateInterface[]
+     * @var string[]
      */
-    protected array $stateTransitions = [];
+    protected array $allowedStateTransitions = [];
 	protected bool $hasGiftWrapping = false;
 
 	/**
 	 * @throws \InvalidArgumentException Unknown article type
 	 */
-	public function __construct(string $articleType, StateInterface $initialState)
+	public function __construct(string $articleType)
 	{
 		self::validateType($articleType);
 		$this->articleType = $articleType;
-		$this->state = $initialState;
         $this->initializeStates();
+        $this->currentStateIndex = 0;
 	}
 
     abstract protected function initializeStates(): void;
+    abstract public function getAllowedTransitions(): array;
 
 	/**
 	 * @return string[]
@@ -59,22 +58,13 @@ abstract class Article
 		}
 	}
 
-	public function getState(): StateInterface
-	{
-		return $this->state;
-	}
-
-	public function setState(StateInterface $state): void
-	{
-		$this->state = $state;
-	}
-
 	/**
 	 * @return $this
 	 */
 	public function enableGiftWrapping(): self
 	{
 		$this->hasGiftWrapping = true;
+        $this->initializeStates();
 		return $this;
 	}
 
@@ -88,8 +78,18 @@ abstract class Article
 		return $this->articleType;
 	}
 
-    public function getStateTransitions(): array
+    public function getAllowedStateTransitions(): array
     {
-        return $this->stateTransitions;
+        return $this->allowedStateTransitions;
+    }
+
+    public function getCurrentStateIndex(): int
+    {
+        return $this->currentStateIndex;
+    }
+
+    public function incrementCurrentStateIndex(): void
+    {
+        ++$this->currentStateIndex;
     }
 }

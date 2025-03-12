@@ -241,9 +241,9 @@ final class ArticleTest extends TestCase
 	 * @dataProvider dataProviderGetPosterFramed
 	 * @doesNotPerformAssertions
 	 */
-	public function testPosterFramed(array $states, bool $hasGiftWrapping): void
+	public function testPosterFramedWithValidStates(array $states, bool $hasGiftWrapping): void
 	{
-		$article = new FramedPoster(array_shift($states));
+		$article = new FramedPoster();
 
 		if ($hasGiftWrapping) {
 			$article->enableGiftWrapping();
@@ -260,7 +260,7 @@ final class ArticleTest extends TestCase
 	 */
 	public function testPosterFramedInvalidStateTransitions(array $states): void
 	{
-		$article = new FramedPoster(array_shift($states));
+		$article = new FramedPoster();
 		$article->enableGiftWrapping();
 
 		$this->expectException(InvalidStateTransferException::class);
@@ -275,9 +275,9 @@ final class ArticleTest extends TestCase
 	 * @dataProvider dataProviderGetPrintedGlass
 	 * @doesNotPerformAssertions
 	 */
-	public function testPrintedGlass(array $states, bool $hasGiftWrapping): void
+	public function testPrintedGlassWithValidStates(array $states, bool $hasGiftWrapping): void
 	{
-		$article = new GlassPlate(array_shift($states));
+		$article = new GlassPlate();
 
 		if ($hasGiftWrapping) {
 			$article->enableGiftWrapping();
@@ -294,7 +294,7 @@ final class ArticleTest extends TestCase
 	 */
 	public function testPrintedGlassInvalidStateTransitions(array $states): void
 	{
-		$article = new GlassPlate(array_shift($states));
+		$article = new GlassPlate();
 		$article->enableGiftWrapping();
 
 		$this->expectException(InvalidStateTransferException::class);

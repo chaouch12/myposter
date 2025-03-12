@@ -16,6 +16,12 @@ final class ProcessManager
 	 */
 	public function confirmAndMoveToState(StateInterface $state, Article $article): void
 	{
-        $state->transitionTo($state, $article);
+        $expectedIndex = array_search($state->getType(), $article->getAllowedStateTransitions(), true);
+
+        if ($expectedIndex === false || $expectedIndex !== $article->getCurrentStateIndex()) {
+            throw new InvalidStateTransferException("Invalid state '{$state->getType()}' for article type '{$article->getType()}'");
+        }
+
+        $article->incrementCurrentStateIndex();
 	}
 }

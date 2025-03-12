@@ -4,28 +4,38 @@ declare(strict_types=1);
 
 namespace Myposter\Production;
 
-use Myposter\Production\State\StateInterface;
+use Myposter\Production\State\Framed;
+use Myposter\Production\State\GiftWrapped;
+use Myposter\Production\State\Ordered;
+use Myposter\Production\State\Printed;
+use Myposter\Production\State\Shipped;
+use Myposter\Production\State\Sliced;
 
 class FramedPoster extends Article
 {
-    public function __construct(StateInterface $initialState)
+    public function __construct()
     {
-        parent::__construct(self::TYPE_POSTER_FRAMED, $initialState);
+        parent::__construct(self::TYPE_POSTER_FRAMED);
     }
 
     protected function initializeStates(): void
     {
-        $this->stateTransitions = [
-            State::ORDERED,
-            State::PRINTED,
-            State::SLICED,
-            State::FRAMED
+        $this->allowedStateTransitions = [
+            Ordered::TYPE,
+            Printed::TYPE,
+            Sliced::TYPE,
+            Framed::TYPE,
         ];
 
         if ($this->hasGiftWrapping()) {
-            $this->stateTransitions[] = State::GIFT_WRAPPED;
+            $this->allowedStateTransitions[] = GiftWrapped::TYPE;
         }
 
-        $this->stateTransitions[] = State::SHIPPED;
+        $this->allowedStateTransitions[] = Shipped::TYPE;
+    }
+
+    public function getAllowedTransitions(): array
+    {
+        return $this->allowedStateTransitions;
     }
 } 
