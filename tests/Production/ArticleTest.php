@@ -43,17 +43,17 @@ final class ArticleTest extends TestCase
 			false,
 		];
 
-//		yield [
-//			'stateGiftWrapped' => [
-//				new Ordered(),
-//				new Printed(),
-//				new Sliced(),
-//				new Framed(),
-//				new GiftWrapped(),
-//				new Shipped(),
-//			],
-//			true,
-//		];
+		yield [
+			'stateGiftWrapped' => [
+				new Ordered(),
+				new Printed(),
+				new Sliced(),
+				new Framed(),
+				new GiftWrapped(),
+				new Shipped(),
+			],
+			true,
+		];
 	}
 
 	/**

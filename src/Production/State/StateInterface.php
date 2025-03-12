@@ -10,6 +10,6 @@ interface StateInterface
 {
 	public function getType(): string;
     public function transitionTo(StateInterface $newState, Article $article): void;
-    public function isValidTransition(string $nextState): bool;
+    public function isValidTransition(StateInterface $newState, Article $article): bool;
 
 }

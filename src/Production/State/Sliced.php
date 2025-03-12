@@ -12,7 +12,6 @@ final class Sliced extends AbstractState
 
     public function __construct()
     {
-        $this->name = self::TYPE;
         $this->validNextStates = [State::FRAMED];
     }
 
