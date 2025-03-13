@@ -4,19 +4,33 @@ declare(strict_types=1);
 
 namespace Myposter\Shipping;
 
+use JsonException;
+use Myposter\API\CustomerDataApiMock;
 use Myposter\Api\Entity\Customer;
 use Myposter\Shipping\Entity\Street;
 
 final class AddressValidator
 {
-	/**
-	 * @return Customer[]
-	 */
+    /**
+     * @return Customer[]
+     * @throws JsonException
+     */
 	public function getAllCustomers(): array
 	{
-		// TODO: Retrieve customers from \Myposter\API\CustomerDataApiMock
+        $apiData = json_decode(CustomerDataApiMock::getCustomerData(), true, 512, JSON_THROW_ON_ERROR);
+        $customers = [];
 
-		return [];
+        foreach ($apiData as $data) {
+            $customers[] = new Customer(
+                $data['firstName'] ?? '',
+                $data['lastName'] ?? '',
+                $data['street'] ?? '',
+                $data['city'] ?? '',
+                $data['postalCode'] ?? ''
+            );
+        }
+
+        return $customers;
 	}
 
 	/**
@@ -29,8 +43,11 @@ final class AddressValidator
 	 */
 	public function splitStreet(Customer $customer): Street
 	{
-		// TODO: Implement
+        $streetPattern = '/^(.+?)\s*(\d.*)$/';
+        if (preg_match($streetPattern, $customer->getStreet(), $matches)) {
+            return new Street($matches[1], $matches[2]);
+        }
 
-		throw new \Exception('method not implemented', 1626964164621);
+        return new Street($customer->getStreet(), '');
 	}
 }

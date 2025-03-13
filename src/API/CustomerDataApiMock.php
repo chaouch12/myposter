@@ -12,6 +12,12 @@ final class CustomerDataApiMock
 	 */
 	public static function getCustomerData(): string
 	{
-		return \file_get_contents('../resources/files/customer_data.json');
+        $pathToJson = realpath(__DIR__ . '/../../resources/files/customer_data.json');
+
+        if (!file_exists($pathToJson) || !is_readable($pathToJson)) {
+            throw new \RuntimeException('File with path "' . $pathToJson . '" does not exist!');
+        }
+
+		return \file_get_contents($pathToJson);
 	}
 }
