@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Myposter\API\Entity;
 
+/**
+ * @author Walid Chaouch <walid.chaouch500@gmail.com>
+ */
 final class Customer
 {
 	private string $city;

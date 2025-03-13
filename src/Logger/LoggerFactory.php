@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Myposter\Logger;
 use InvalidArgumentException;
 
+/**
+ * @author Walid Chaouch <walid.chaouch500@gmail.com>
+ */
 class LoggerFactory
 {
     /**

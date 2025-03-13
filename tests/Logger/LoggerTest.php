@@ -11,6 +11,9 @@ use Myposter\Logger\LoggerFactory;
 use Myposter\Logger\LoggerType;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @author Walid Chaouch <walid.chaouch500@gmail.com>
+ */
 final class LoggerTest extends TestCase
 {
 

@@ -9,6 +9,9 @@ use Myposter\Shipping\AddressValidator;
 use Myposter\Shipping\Entity\Street;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @author Walid Chaouch <walid.chaouch500@gmail.com>
+ */
 final class AddressTest extends TestCase
 {
 	/**

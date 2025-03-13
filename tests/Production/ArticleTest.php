@@ -19,6 +19,9 @@ use Myposter\Production\State\StateInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @author Walid Chaouch <walid.chaouch500@gmail.com>
+ */
 final class ArticleTest extends TestCase
 {
 	private ProcessManager $manager;

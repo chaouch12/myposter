@@ -6,6 +6,9 @@ namespace Myposter\Logger;
 
 use Myposter\Helper\FileHelper;
 
+/**
+ * @author Walid Chaouch <walid.chaouch500@gmail.com>
+ */
 class FileLogger extends Logger
 {
     private string $filePath;

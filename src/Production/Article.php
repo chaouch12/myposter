@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Myposter\Production;
 
+/**
+ * @author Walid Chaouch <walid.chaouch500@gmail.com>
+ */
 abstract class Article
 {
 	public const TYPE_POSTER_FRAMED = 'poster-framed';

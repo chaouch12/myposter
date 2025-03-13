@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Myposter\Logger;
 
+/**
+ * @author Walid Chaouch <walid.chaouch500@gmail.com>
+ */
 class ConsoleLogger extends Logger
 {
     public const COLORS = [

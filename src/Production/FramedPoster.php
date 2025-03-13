@@ -11,6 +11,9 @@ use Myposter\Production\State\Printed;
 use Myposter\Production\State\Shipped;
 use Myposter\Production\State\Sliced;
 
+/**
+ * @author Walid Chaouch <walid.chaouch500@gmail.com>
+ */
 class FramedPoster extends Article
 {
     public function __construct()

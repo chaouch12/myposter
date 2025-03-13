@@ -9,6 +9,9 @@ use Myposter\Production\State\Ordered;
 use Myposter\Production\State\Printed;
 use Myposter\Production\State\Shipped;
 
+/**
+ * @author Walid Chaouch <walid.chaouch500@gmail.com>
+ */
 class GlassPlate extends Article
 {
     public function __construct()

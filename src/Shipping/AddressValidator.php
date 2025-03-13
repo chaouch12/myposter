@@ -9,6 +9,9 @@ use Myposter\API\CustomerDataApiMock;
 use Myposter\Api\Entity\Customer;
 use Myposter\Shipping\Entity\Street;
 
+/**
+ * @author Walid Chaouch <walid.chaouch500@gmail.com>
+ */
 final class AddressValidator
 {
     /**

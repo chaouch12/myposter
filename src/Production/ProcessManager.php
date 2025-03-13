@@ -8,6 +8,9 @@ use Myposter\Logger\LoggerInterface;
 use Myposter\Production\Exception\InvalidStateTransferException;
 use Myposter\Production\State\StateInterface;
 
+/**
+ * @author Walid Chaouch <walid.chaouch500@gmail.com>
+ */
 final class ProcessManager
 {
     private LoggerInterface $logger;

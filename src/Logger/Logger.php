@@ -2,6 +2,9 @@
 
 namespace Myposter\Logger;
 
+/**
+ * @author Walid Chaouch <walid.chaouch500@gmail.com>
+ */
 abstract class Logger implements LoggerInterface
 {
     abstract protected function log(string $level, string $message, array $context = []): void;
