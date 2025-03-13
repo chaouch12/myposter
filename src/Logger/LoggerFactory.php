@@ -7,6 +7,9 @@ use InvalidArgumentException;
 
 class LoggerFactory
 {
+    /**
+     * @throws InvalidArgumentException
+     */
     public static function create(string $type): LoggerInterface
     {
         return match ($type) {

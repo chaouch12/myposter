@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Myposter\Tests\Production;
 
-use Myposter\Logger\LoggerFactory;
 use Myposter\Logger\LoggerInterface;
-use Myposter\Logger\LoggerType;
 use Myposter\Production\Exception\InvalidStateTransferException;
 use Myposter\Production\FramedPoster;
 use Myposter\Production\GlassPlate;
@@ -28,8 +26,7 @@ final class ArticleTest extends TestCase
 
 	protected function setUp(): void
 	{
-//		$this->manager = new ProcessManager($this->get_logger_mock());
-        $this->manager = new ProcessManager(LoggerFactory::create(LoggerType::CONSOLE));
+		$this->manager = new ProcessManager($this->get_logger_mock());
 	}
 
 	/**

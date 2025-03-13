@@ -4,15 +4,11 @@ declare(strict_types=1);
 
 namespace Myposter\Tests\Logger;
 
+use InvalidArgumentException;
+use Myposter\Logger\ConsoleLogger;
 use Myposter\Logger\FileLogger;
-use Myposter\Production\FramedPoster;
-use Myposter\Production\State\Framed;
-use Myposter\Production\State\GiftWrapped;
-use Myposter\Production\State\Ordered;
-use Myposter\Production\State\Printed;
-use Myposter\Production\State\Shipped;
-use Myposter\Production\State\Sliced;
-use Myposter\Production\State\StateInterface;
+use Myposter\Logger\LoggerFactory;
+use Myposter\Logger\LoggerType;
 use PHPUnit\Framework\TestCase;
 
 final class LoggerTest extends TestCase
@@ -20,11 +16,14 @@ final class LoggerTest extends TestCase
 
     private string $logFilePath;
     private FileLogger $fileLogger;
+    private ConsoleLogger $consoleLogger;
 
     protected function setUp(): void
     {
-        $this->logFilePath = dirname(__DIR__) . '/var/log/php/log.txt';
+        $this->logFilePath = dirname(__DIR__,2) . '/src/var/log/php/log1.txt';
+
         $this->fileLogger = new FileLogger($this->logFilePath);
+        $this->consoleLogger = new ConsoleLogger();
     }
 
     protected function tearDown(): void
@@ -35,45 +34,84 @@ final class LoggerTest extends TestCase
         }
     }
 
-    // test factory with valid data / 2. with invalid Data
-    // test FileLogger
-    // test ConsoleLogger
-
-    public function testFileLoggerCreatesLogFile(): void
+    /**
+     * @return \Generator
+     */
+    public function dataProviderLoggerFactoryValidTypes(): \Generator
     {
-        $this->fileLogger->info('Test message');
-
-        $this->assertFileExists($this->logFilePath);
-        $logContents = file_get_contents($this->logFilePath);
-        $this->assertStringContainsString('Test message', $logContents);
+        yield 'FileLogger' => [LoggerType::FILE, FileLogger::class];
+        yield 'ConsoleLogger' => [LoggerType::CONSOLE, ConsoleLogger::class];
     }
 
     /**
      * @return \Generator
      */
-    public function dataProviderGetPosterFramed(): \Generator
+    public function dataProviderLoggerFactoryInvalidTypes(): \Generator
     {
-        yield [
-            'default' => [
-                new Ordered(),
-                new Printed(),
-                new Sliced(),
-                new Framed(),
-                new Shipped(),
-            ],
-            false,
-        ];
+        yield 'Invalid Type 1' => ['type 1'];
+        yield 'Invalid Type 2' => ['Type 2'];
+    }
 
-        yield [
-            'stateGiftWrapped' => [
-                new Ordered(),
-                new Printed(),
-                new Sliced(),
-                new Framed(),
-                new GiftWrapped(),
-                new Shipped(),
-            ],
-            true,
-        ];
+    /**
+     * @return \Generator
+     */
+    public function dataProviderFileLoggerFunctionality(): \Generator
+    {
+        yield 'Message 1' => ['FileLogger test message'];
+        yield 'Message 2' => ['Test message'];
+    }
+
+    /**
+     * @dataProvider dataProviderLoggerFactoryValidTypes
+     */
+    public function testLoggerFactoryWithValidTypes(string $type, string $expectedClass): void
+    {
+        $logger = LoggerFactory::create($type);
+        $this->assertInstanceOf($expectedClass, $logger);
+    }
+
+    /**
+     * @dataProvider dataProviderLoggerFactoryInvalidTypes
+     */
+    public function testLoggerFactoryWithInValidTypes(string $type): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        LoggerFactory::create($type);
+    }
+
+    /**
+     * @dataProvider dataProviderFileLoggerFunctionality
+     */
+    public function testFileLoggerFunctionality(string $logMessage): void
+    {
+        $this->fileLogger->info($logMessage);
+        $this->assertFileExists($this->logFilePath);
+        $logContents = file_get_contents($this->logFilePath);
+        $this->assertStringContainsString($logMessage, $logContents);
+    }
+
+    public function testWriteAppendsToFile(): void
+    {
+        $this->fileLogger->info( "First message");
+        $this->fileLogger->info( "Second message");
+
+        $logContent = file_get_contents($this->logFilePath);
+        $logLines = explode("\n", trim($logContent));
+
+        $this->assertCount(2, $logLines);
+        $this->assertStringContainsString("First message", $logLines[0]);
+        $this->assertStringContainsString("Second message", $logLines[1]);
+    }
+
+    /**
+     * @dataProvider dataProviderFileLoggerFunctionality
+     */
+    public function testConsoleLoggerFunctionality(string $message): void
+    {
+        ob_start();
+        $this->consoleLogger->error($message);
+        $output = ob_get_clean();
+
+        $this->assertStringContainsString($message, $output);
     }
 }

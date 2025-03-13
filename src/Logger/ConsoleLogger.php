@@ -16,16 +16,10 @@ class ConsoleLogger extends Logger
     protected function log(string $level, string $message, array $context = []): void
     {
         $formattedMessage = $this->formatMessage($level, $message, $context);
-        
-        // Use STDERR for error level, STDOUT for others
-        if ($level === LogLevel::ERROR) {
-            fwrite(STDERR, $formattedMessage . PHP_EOL);
-        } else {
-            fwrite(STDOUT, $formattedMessage . PHP_EOL);
-        }
+        echo $formattedMessage;
     }
 
-    public function formatMessage(string $level, string $message, array $context = []): string{
+    public function formatMessage(string $level, string $message, array $context = [], bool $withColor = false): string{
 
         $timestamp = (new \DateTimeImmutable('now', new \DateTimeZone('Europe/Berlin')))->format('Y-m-d H:i:s');
         $contextString = empty($context) ? '' : json_encode($context);
@@ -43,7 +37,7 @@ class ConsoleLogger extends Logger
                 $levelColored,
                 $message,
                 $extraInfo ? ' - ' . $extraInfo : ''
-            ) . PHP_EOL;
+            ) . PHP_EOL . PHP_EOL;
     }
 
     private function colored(string $color, string $text): string {
