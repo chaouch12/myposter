@@ -28,8 +28,8 @@ final class ArticleTest extends TestCase
 
 	protected function setUp(): void
 	{
-		$this->manager = new ProcessManager($this->get_logger_mock());
-//        $this->manager = new ProcessManager(LoggerFactory::create(LoggerType::FILE));
+//		$this->manager = new ProcessManager($this->get_logger_mock());
+        $this->manager = new ProcessManager(LoggerFactory::create(LoggerType::CONSOLE));
 	}
 
 	/**
