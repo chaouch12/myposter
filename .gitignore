@@ -1,8 +1,6 @@
-
 /vendor/
 .idea
 .phpunit.result.cache
-/phpunit.xml
 .DS_Store
 var/
 
